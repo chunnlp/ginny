@@ -227,22 +227,22 @@ def _single_cell(unit_type, num_units, forget_bias, dropout, mode,
     dropout = dropout if mode == tf.contrib.learn.ModeKeys.TRAIN else 0.
 
     if unit_type == 'lstm':
-        utils.print_out(' LSTM, forget_bias={}'.format(forget_bias), new_line=False)
+        utils.print_out('  LSTM, forget_bias={}'.format(forget_bias), new_line=False)
         single_cell = tf.contrib.rnn.BasicLSTMCell(
             num_units,
             forget_bias=forget_bias)
     elif unit_type == 'gru':
-        utils.print_out(' GRU', new_line=False)
+        utils.print_out('  GRU', new_line=False)
         single_cell = tf.contrib.rnn.GRUCell(num_units)
     elif unit_type == 'layer_norm_lstm':
-        utils.print_out(' Layer Normalized LSTM, forget_bias={}'.format(forget_bias),
+        utils.print_out('  Layer Normalized LSTM, forget_bias={}'.format(forget_bias),
                         new_line=False)
         single_cell = tf.contrib.rnn.LayerNormBasicLSTMCell(
             num_units,
             forget_bias=forget_bias,
             layer_norm=True)
     elif unit_type == 'nas':
-        utils.print_out(' NASCell', new_line=False)
+        utils.print_out('  NASCell', new_line=False)
         single_cell = tf.contrib.rnn.NASCell(num_units)
     else:
         raise ValueError('Unknown unit type {}'.format(unit_type))
@@ -250,13 +250,13 @@ def _single_cell(unit_type, num_units, forget_bias, dropout, mode,
     if dropout > 0.:
         single_cell = tf.contrib.rnn.DropoutWrapper(
             cell=single_cell, input_keep_prob=(1. - dropout))
-        utils.print_out(' {}, dropout={} '.format(type(single_cell).__name__, dropout),
+        utils.print_out('  {}, dropout={} '.format(type(single_cell).__name__, dropout),
                         new_line=False)
 
     if residual_connection:
         single_cell = tf.contrib.rnn.ResidualWrapper(
             single_cell, residual_fn=residual_fn)
-        utils.print_out(' {}, device={}'.format(type(single_cell).__name__, device_str),
+        utils.print_out('  {}, device={}'.format(type(single_cell).__name__, device_str),
                         new_line=False)
 
     return single_cell
@@ -269,7 +269,7 @@ def _cell_list(unit_type, num_units, num_layers, num_residual_layers,
 
     cell_list = []
     for i in range(num_layers):
-        utils.print_out(' cell {}'.format(i), new_line=False)
+        utils.print_out('  cell {}'.format(i), new_line=False)
         single_cell = single_cell_fn(
             unit_type=unit_type,
             num_units=num_units,
@@ -318,7 +318,7 @@ def load_model(model, ckpt, session, name):
     model.saver.restore(session, ckpt)
     session.run(tf.tables_initializer())
     utils.print_out(
-        ' loaded {} model parameters from {}, time {:.2f}s'.format(
+        '  loaded {} model parameters from {}, time {:.2f}s'.format(
             name, ckpt, time.time() - start_time))
     return model
 
@@ -330,7 +330,7 @@ def create_or_load_model(model, model_dir, session, name):
         start_time = time.time()
         session.run(tf.global_variables_initializer())
         session.run(tf.tables_initializer())
-        utils.print_out(' created {} model with fresh parameters, time {:.2f}s'.format(
+        utils.print_out('  created {} model with fresh parameters, time {:.2f}s'.format(
             name, time.time() - start_time))
 
     global_step = model.global_step.eval(session=session)

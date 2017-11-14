@@ -110,14 +110,14 @@ class BaseModel(object):
         # Print trainable variables
         utils.print_out('# Trainable variables')
         for param in params:
-            utils.print_out(' {}, {}, {}'.format(param.name,
+            utils.print_out('  {}, {}, {}'.format(param.name,
                                                  str(param.get_shape()),
                                                  param.op.device))
 
     def _get_learning_rate_warmup(self, hparams):
         warmup_steps = hparams.warmup_steps
         warmup_scheme = hparams.warmup_scheme
-        utils.print_out(' learning_rate={}, warmup_stes={}, warmup_scheme={}'.format(
+        utils.print_out('  learning_rate={}, warmup_stes={}, warmup_scheme={}'.format(
             hparams.learning_rate, warmup_steps, warmup_scheme))
 
         if warmup_scheme == 't2t':
@@ -230,7 +230,7 @@ class BaseModel(object):
     def _get_infer_maximum_iterations(self, hparams, source_sequence_length):
         if hparams.tgt_max_len_infer:
             maximum_iterations = hparams.tgt_max_len_infer
-            utils.print_out(' decoding maximum_iterations {}'.format(maximum_iterations))
+            utils.print_out('  decoding maximum_iterations {}'.format(maximum_iterations))
         else:
             decoding_length_factor = 2.
             max_encoder_length = tf.reduce_max(source_sequence_length)
@@ -396,7 +396,7 @@ class Model(BaseModel):
                 self.embedding_encoder, source)
 
             if hparams.encoder_type == 'uni':
-                utils.print_out(' num_layers = {}., num_residual_layers = {}'.format(
+                utils.print_out('  num_layers = {}., num_residual_layers = {}'.format(
                     num_layers, num_residual_layers))
                 cell = self._build_encoder_cell(
                     hparams, num_layers, num_residual_layers)
@@ -410,7 +410,7 @@ class Model(BaseModel):
             elif hparams.encoder_type == 'bi':
                 num_bi_layers = int(num_layers / 2)
                 num_bi_residual_layers = int(num_residual_layers / 2)
-                utils.print_out(' num_bi_layers = {}, num_bi_residual_layers = {}'.format(
+                utils.print_out('  num_bi_layers = {}, num_bi_residual_layers = {}'.format(
                     num_bi_layers, num_bi_residual_layers))
                 encoder_outputs, bi_encoder_state = (
                     self._build_bidirectional_rnn(

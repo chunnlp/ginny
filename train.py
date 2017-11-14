@@ -239,7 +239,7 @@ dev train(hparams, scope=None, target_session=''):
             train_ppl = utils.safe_exp(checkpoint_loss / checkpoint_predict_count)
             speed = checkpoint_total_count / (1000 * step_time)
             utils.print_out(
-                ' global step {} lr {} '
+                '  global step {} lr {} '
                 'step-time {:.2f}s wps {:.2f}K ppl {:.2f} {}'.format(
                     global_step,
                     loaded_train_model.learning_rate.eval(session=train_sess),
